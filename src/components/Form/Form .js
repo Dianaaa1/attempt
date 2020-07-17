@@ -7,8 +7,8 @@ function Form(props){
       const refdescription=useRef(null)
       const onSubmit=(event)=>{
           event.preventDefault();
-          var name=refname.current.value;
-          var description=refdescription.current.value;
+          let name=refname.current.value;
+          let description=refdescription.current.value;
           if(name!==''  && description!==''){
             props.addItem({ name, description});
             
@@ -25,7 +25,6 @@ function Form(props){
                 <label for="description"> Description:</label>
                 <input type="text" ref={refdescription} name="description" placeholder="description" id="description"/> <br />
                 <input type="submit" value="Add Project"/> 
-                
                 </fieldset>
             </form>
         </div>

@@ -9,8 +9,8 @@ function OneProject(props){
     
      const save=(event)=>{
           event.preventDefault();
-          var name=editname.current.value;
-          var description=editdescription.current.value;
+          let name=editname.current.value;
+          let description=editdescription.current.value;
           if(name=='' || description==''){
               alert("Введите все данные");
               return;   
@@ -22,7 +22,7 @@ function OneProject(props){
       const showEditForm=()=>{
         editform.current.style.display="block";
       }
-        var classtoggle=props.project.done ?  'done':  'undone';
+        let classtoggle=props.project.done ?  'done':  'undone';
     return (
     <div className="wrapper">
         <div className="project">

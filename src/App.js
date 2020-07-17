@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import Form from './components/Form/Form copy'
+import Form from './components/Form/Form '
 import ProjectsList from './components/ProjectsList/ProjectsList'
 
 
@@ -7,31 +7,34 @@ import ProjectsList from './components/ProjectsList/ProjectsList'
   const [projects, Updateprojects]=useState([]);
   //создаем
    const addItem=(projeect)=>{
-    props.projects.push({
+    const allprojects=[ ...projects, ({
       id: Math.random(),
       name: projeect.name,
       description: projeect.description,
-      done: false} )
-    Updateprojects(props.projects);
+      done: false} )]
+    Updateprojects(allprojects);
     };
     const editProject=(i, project)=>{
-      props.projects.splice(i, 1, project);
-      Updateprojects(props.projects);
+      projects.splice(i, 1, project);
+      const allprojects=[...projects];
+      Updateprojects(allprojects);
     }
    const removeItem=(index)=>{
-      props.projects.splice(index, 1);
-      Updateprojects(props.projects);
+    projects.splice(index, 1);
+    const allprojects=[...projects];
+      Updateprojects(allprojects);
     }
     const markToDone=(index)=>{
       alert("work");
       var done=projects[index].done;
       projects[index].done=!done;
-      Updateprojects(projects);
+      const allprojects=[...projects];
+      Updateprojects(allprojects);
     }
       return(
         <div class="main">
         <Form addItem={addItem} editProject={editProject}/>
-        <ProjectsList projects={props.projects} editProject={editProject} markToDone={markToDone} removeProject={removeItem} ></ProjectsList>
+        <ProjectsList projects={projects} editProject={editProject} markToDone={markToDone} removeProject={removeItem} ></ProjectsList>
         </div>
       )
   }

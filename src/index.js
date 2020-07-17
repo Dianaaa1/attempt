@@ -4,10 +4,10 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-var projects=[];
+
 ReactDOM.render(
   <React.StrictMode>
-    <App projects={projects}/>
+    <App/>
   </React.StrictMode>,
   document.getElementById('root')
 );
