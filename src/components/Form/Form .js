@@ -1,6 +1,7 @@
 import React, { useRef } from 'react'
 import './style.css'
 
+
 function Form(props){
       const refform=useRef(null)
       const refname=useRef(null)
@@ -13,7 +14,8 @@ function Form(props){
             props.addItem({ name, description});
             
           }
-          else alert("Введите все данные");         
+          else alert("Введите все данные");  
+          refform.current.reset();       
       }
     return (
     <div className="wrapper">
