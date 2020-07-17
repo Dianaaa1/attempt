@@ -1,0 +1,40 @@
+.done{
+    color: gray; 
+    text-decoration: line-through;
+}
+.done, .undone{
+    cursor: pointer; 
+    margin-top: 30px;
+}
+div{
+    margin: 5px;
+}
+.title{
+    font-size: 20px;
+}
+#update{
+    display: none;
+}
+.project{
+    .item-name{
+        font-weight: bold;
+    }
+    .title-description{
+        font-size: 15px;
+    }
+    .item-description{
+        font-size: 13px;
+    }
+}
+.form-update{
+    display: none;
+    margin: 10px auto;
+    padding: 10px 0;
+    input{
+        padding: 5px;
+        margin: 5px;
+    }
+}
+button{
+    margin: 5px;
+}
