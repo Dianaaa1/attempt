@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import Form from './components/Form/Form '
+import Form from './components/Form/Form'
 import ProjectsList from './components/ProjectsList/ProjectsList'
 
 
@@ -25,7 +25,6 @@ import ProjectsList from './components/ProjectsList/ProjectsList'
       Updateprojects(allprojects);
     }
     const markToDone=(index)=>{
-      alert("work");
       var done=projects[index].done;
       projects[index].done=!done;
       const allprojects=[...projects];
