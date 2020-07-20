@@ -48,7 +48,7 @@ function Form(props){
             </label>
             <input
               id="description"
-              placeholder="Enter your email"
+              placeholder="Description"
               type="text"
               value={values.description}
               onChange={handleChange}
