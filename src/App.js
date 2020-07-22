@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import Form from "./components/Form/Form";
 import ProjectsList from "./components/ProjectsList/ProjectsList";
+import { BrowserRouter, Route, Redirect } from "react-router-dom";
+import Login from "./components/Login";
 
 function Projects(props) {
   const [projects, Updateprojects] = useState([]);
@@ -33,15 +35,30 @@ function Projects(props) {
     const allprojects = [...projects];
     Updateprojects(allprojects);
   };
+    const redirect=()=>{
+     return localStorage.getItem("user") ?  <Form addItem={addItem} editProject={editProject} />
+           :  <Redirect to="/login" />
+  }
+
+  
   return (
     <div className="main">
-      <Form addItem={addItem} editProject={editProject} />
-      <ProjectsList
-        projects={projects}
-        editProject={editProject}
-        markToDone={markToDone}
-        removeProject={removeItem}
-      ></ProjectsList>
+      <BrowserRouter>
+        <Route exact path="/" >
+          { localStorage.getItem("user") ? ( <Form addItem={addItem} editProject={editProject} /> )
+           : ( <Redirect to="/login" />)}
+        </Route>
+        {redirect}
+        <Route
+          path="/list"><ProjectsList
+          projects={projects}
+          editProject={editProject}
+          markToDone={markToDone}
+          removeProject={removeItem}
+        /> </Route>
+
+        <Route path="/login" component={Login} />
+      </BrowserRouter>
     </div>
   );
 }
