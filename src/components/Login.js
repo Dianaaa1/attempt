@@ -1,31 +1,24 @@
-import React from "react";
+import React, {useState} from "react";
 import { Redirect } from "react-router-dom";
 
-class Login extends React.Component {
-  constructor(props) {
-    super(props);
-
-    logout();
-
-    this.state = {
-      username: "",
-      password: "",
-      error: "",
-      login: false,
-    };
-
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
-  handleChange(e) {
+function Login () {
+  logout();
+  const [user, updateInf] = useState({
+    username: "",
+    password: "",
+    error: "",
+    login: false,
+  })
+  
+  const handleChange=(e) => {
     const { name, value } = e.target;
-    this.setState({ [name]: value });
+    updateInf({ [name]: value });
   }
 
-  handleSubmit(e) {
+  const handleSubmit=(e)=>{
     e.preventDefault();
-
-    const { username, password } = this.state;
+    const username=e.target.username.value;
+    const password=e.target.password.value;
 
     //останавливается если форма пустая
     if (!(username && password)) {
@@ -35,17 +28,16 @@ class Login extends React.Component {
 
     login(username, password).then(
       (user) => {
-        this.setState({ login: true });
+        updateInf({ login: true });
       },
       (error) => {
-        this.setState({ error: false });
+        updateInf({ error: false });
       }
     );
   }
-  render() {
-    const { username, password } = this.state;
+    const { username, password } = user;
     // если пользователь залогинен то перенаправляем на форму создания проектов
-    if (this.state.login) {
+    if (user.login) {
       return (
         <Redirect
           to={{
@@ -56,14 +48,14 @@ class Login extends React.Component {
     }
     return (
       <div>
-        <form name="form" onSubmit={this.handleSubmit}>
+        <form name="form" onSubmit={handleSubmit}>
           <div>
             <label htmlFor="username">Username</label>
             <input
               type="text"
               name="username"
               value={username}
-              onChange={this.handleChange}
+              onChange={handleChange}
             />
           </div>
           <div>
@@ -72,7 +64,7 @@ class Login extends React.Component {
               type="password"
               name="password"
               value={password}
-              onChange={this.handleChange}
+              onChange={handleChange}
             />
           </div>
           <div className="form-group">
@@ -82,7 +74,7 @@ class Login extends React.Component {
       </div>
     );
   }
-}
+
 function login(username, password) {
   const requestOptions = {
     method: "POST",
