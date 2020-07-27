@@ -7,6 +7,7 @@ export function configureFakeBackend() {
 
                 //проверяю запрос   
                 if (url==='/users/authenticate' && opts.method === 'POST') {
+                    
                     //беру параметры с тела запроса
                     let params = JSON.parse(opts.body);
 
@@ -16,6 +17,7 @@ export function configureFakeBackend() {
                     });
 
                     if (filteredUsers.length) {
+                        
                         //проверяю не пустой ли массив (есть ли элемент который совпадает)
                         let user = filteredUsers[0];
                         let responseJson = {

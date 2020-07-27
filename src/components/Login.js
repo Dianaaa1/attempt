@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import { Redirect } from "react-router-dom";
+import { Formik } from "formik";
 
 function Login () {
   logout();
@@ -15,10 +16,10 @@ function Login () {
     updateInf({ [name]: value });
   }
 
-  const handleSubmit=(e)=>{
-    e.preventDefault();
-    const username=e.target.username.value;
-    const password=e.target.password.value;
+  const onSubmit=(obj)=>{
+    
+    const username=obj.username;
+    const password=obj.password;
 
     //останавливается если форма пустая
     if (!(username && password)) {
@@ -28,14 +29,11 @@ function Login () {
 
     login(username, password).then(
       (user) => {
+        if(localStorage.getItem("user", JSON.stringify(user)))
         updateInf({ login: true });
-      },
-      (error) => {
-        updateInf({ error: false });
       }
     );
   }
-    const { username, password } = user;
     // если пользователь залогинен то перенаправляем на форму создания проектов
     if (user.login) {
       return (
@@ -48,29 +46,44 @@ function Login () {
     }
     return (
       <div>
-        <form name="form" onSubmit={handleSubmit}>
-          <div>
-            <label htmlFor="username">Username</label>
-            <input
-              type="text"
-              name="username"
-              value={username}
-              onChange={handleChange}
-            />
-          </div>
-          <div>
-            <label htmlFor="password">Password</label>
-            <input
-              type="password"
-              name="password"
-              value={password}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="form-group">
-            <button>Login</button>
-          </div>
-        </form>
+        <Formik
+          initialValues={{ username: "", password: "" }}
+          onSubmit={onSubmit}
+        >
+          {(props) => {
+            const { values, handleChange, handleSubmit, handleReset } = props;
+            return (
+              <form onSubmit={handleSubmit}>
+                <label htmlFor="username" style={{ display: "block" }}>
+                Username
+                </label>
+                <input
+                  id="username"
+                  placeholder="username"
+                  type="text"
+                  value={values.username}
+                  onChange={handleChange}
+                />
+                <label htmlFor="password" style={{ display: "block" }}>
+                  Password
+                </label>
+                <input
+                  id="password"
+                  placeholder="password"
+                  type="password"
+                  value={values.description}
+                  onChange={handleChange}
+                  className="project-name"
+                />
+                <br />
+                <button type="submit">Login</button>
+                <button type="button" onClick={handleReset}>
+                  Reset
+                </button>
+              </form>
+            );
+          }}
+        </Formik>
       </div>
     );
   }
@@ -84,7 +97,7 @@ function login(username, password) {
     .then(handleResponse)
     .then((user) => {
       localStorage.setItem("user", JSON.stringify(user));
-    });
+    }, (error)=> alert(error));
 }
 
 function logout() {
