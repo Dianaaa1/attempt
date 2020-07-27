@@ -1,76 +1,87 @@
 import React from "react";
-import {  Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 
 class Login extends React.Component {
-    constructor(props) {
-        super(props);
+  constructor(props) {
+    super(props);
 
-       logout();
+    logout();
 
-        this.state = {
-            username: '',
-            password: '',
-            error: '',
-            login: false
-        };
+    this.state = {
+      username: "",
+      password: "",
+      error: "",
+      login: false,
+    };
 
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+  handleChange(e) {
+    const { name, value } = e.target;
+    this.setState({ [name]: value });
+  }
+
+  handleSubmit(e) {
+    e.preventDefault();
+
+    const { username, password } = this.state;
+
+    //останавливается если форма пустая
+    if (!(username && password)) {
+      alert("Введите все данные");
+      return;
     }
-    handleChange(e) {
-        const { name, value } = e.target;
-        this.setState({ [name]: value });
+
+    login(username, password).then(
+      (user) => {
+        this.setState({ login: true });
+      },
+      (error) => {
+        this.setState({ error: false });
+      }
+    );
+  }
+  render() {
+    const { username, password } = this.state;
+    // если пользователь залогинен то перенаправляем на форму создания проектов
+    if (this.state.login) {
+      return (
+        <Redirect
+          to={{
+            pathname: "/form",
+          }}
+        />
+      );
     }
-
-    handleSubmit(e) {
-        e.preventDefault();
-
-        const { username, password, error } = this.state;
-
-        //останавливается если форма пустая
-        if (!(username && password)) {
-            alert("Введите все данные");
-            return;
-        }
-
-        login(username, password)
-            .then(
-                user => {
-                    this.setState({login:true});       
-                },
-                error =>{this.setState({ error, loading: false });
-                alert(error)}
-            ).then(()=>this.alertf());
-    }
-    render() {
-        const { username, password } = this.state;
-        // если пользователь залогинен то перенаправляем на форму создания проектов
-        if (this.state.login) 
-        { 
-            return <Redirect
-            to={{
-              pathname: "/form",
-            }}
-          />
-        }
-        return (
-            <div >
-                <form name="form" onSubmit={this.handleSubmit}>
-                    <div>
-                        <label htmlFor="username">Username</label>
-                        <input type="text" name="username" value={username} onChange={this.handleChange} />
-                    </div>
-                    <div >
-                        <label htmlFor="password">Password</label>
-                        <input type="password" name="password" value={password} onChange={this.handleChange} />
-                    </div>
-                    <div className="form-group">
-                        <button >Login</button>
-                    </div>
-                </form>
-            </div>
-        );
-    }
+    return (
+      <div>
+        <form name="form" onSubmit={this.handleSubmit}>
+          <div>
+            <label htmlFor="username">Username</label>
+            <input
+              type="text"
+              name="username"
+              value={username}
+              onChange={this.handleChange}
+            />
+          </div>
+          <div>
+            <label htmlFor="password">Password</label>
+            <input
+              type="password"
+              name="password"
+              value={password}
+              onChange={this.handleChange}
+            />
+          </div>
+          <div className="form-group">
+            <button>Login</button>
+          </div>
+        </form>
+      </div>
+    );
+  }
 }
 function login(username, password) {
   const requestOptions = {
