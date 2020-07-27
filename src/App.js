@@ -6,7 +6,7 @@ import Login from "./components/Login";
 
 function Projects(props) {
   const [projects, Updateprojects] = useState([]);
-  //создаем
+  //создаем проект
   const addItem = (projeect) => {
     const allprojects = [
       ...projects,
@@ -35,29 +35,26 @@ function Projects(props) {
     const allprojects = [...projects];
     Updateprojects(allprojects);
   };
-    const redirect=()=>{
-     return localStorage.getItem("user") ?  <Form addItem={addItem} editProject={editProject} />
-           :  <Redirect to="/login" />
-  }
-
-  
   return (
     <div className="main">
       <BrowserRouter>
-        <Route exact path="/" >
-          { localStorage.getItem("user") ? ( <Form addItem={addItem} editProject={editProject} /> )
-           : ( <Redirect to="/login" />)}
+        <Route exact path="/">
+          {localStorage.getItem("user") ? (
+            <Form addItem={addItem} editProject={editProject} />
+          ) : (
+            <Redirect to="/login" />
+          )}
         </Route>
-        {redirect}
-        <Route
-          path="/list"><ProjectsList
-          projects={projects}
-          editProject={editProject}
-          markToDone={markToDone}
-          removeProject={removeItem}
-        /> </Route>
-
-        <Route path="/login" component={Login} />
+        <Route path="/form">
+          <Form addItem={addItem} editProject={editProject} />
+          <ProjectsList
+            projects={projects}
+            editProject={editProject}
+            markToDone={markToDone}
+            removeProject={removeItem}
+          />
+        </Route>
+        <Route path="/login" render={() => <Login />} />
       </BrowserRouter>
     </div>
   );

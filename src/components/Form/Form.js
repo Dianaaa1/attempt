@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import "./style.css";
 import { Formik } from "formik";
+import { Redirect } from "react-router-dom";
 
 function Form(props) {
   const onSubmit = (obj) => {
@@ -10,9 +11,16 @@ function Form(props) {
       props.addItem({ name, description });
     } else alert("Введите все данные");
   };
-
+  const [auth, logout]=useState(true);
+  //функция logout выполняется внутри и сразу же при рендировании Login page
+  if (!auth)
+  return <Redirect
+            to={{
+              pathname: "/login",
+            }} />
   return (
     <div className="wrapper">
+      <button onClick={()=> logout(false)}>Logout</button>
       <div className="project-form">
         <Formik
           initialValues={{ name: "", description: " " }}
