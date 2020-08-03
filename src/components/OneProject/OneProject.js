@@ -1,49 +1,68 @@
-import React, { useRef } from "react";
-import "./style.css";
+import React, { useRef, useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import cx from "classnames";
+import { toggleProj, deleteProj, editProj } from "../redux/actions/action";
 
-function OneProject(props) {
+const OneProject = ({ proj }) => {
+
   const editform = useRef(null);
   const editname = useRef(null);
   const editdescription = useRef(null);
 
-  const save = (event) => {
-    event.preventDefault();
-    let name = editname.current.value;
-    let description = editdescription.current.value;
-    if (name == "" || description == "") {
-      alert("Введите все данные");
-      return;
-    }
-    props.editProject(props.index, { name, description });
-  };
-  //показываю кнопку
   const showEditForm = () => {
-    editform.current.style.display = "block";
+    if (editform.current.style.display === "none")
+      editform.current.style.display = "block";
+    else editform.current.style.display = "none";
   };
-  let classtoggle = props.project.done ? "done" : "undone";
+
+  const dispatch = useDispatch();
+  const [name, setName] = useState({ name: "" });
+  const [description, setDescription] = useState({ name: "" });
+
   return (
-    <div className="wrapper">
-      <div className="project">
-        <div
-          onClick={() => props.markToDone(props.index)}
-          className={classtoggle}
+    <li className="proj-item">
+      <div onClick={() => dispatch(toggleProj(proj.id))}>
+        {proj && proj.completed ? "👌" : "👋"}{" "}
+        <span
+          className={cx(
+            "proj-item__text",
+            proj && proj.completed && "proj-item__text--completed"
+          )}
         >
-          <div className="title-name">Name: </div>
-          <div className="item-name"> {props.project.name}</div>
-          <div className="title-description">Description:</div>
-          <div className="item-description"> {props.project.description}</div>
-        </div>
-        <button onClick={() => props.removeProject(props.index)}>Delete</button>
-        <button onClick={showEditForm}>Edit</button>
+          Name: {proj.name} <br /> Descripiton: {proj.description}
+        </span>
       </div>
+      <button
+        onClick={() => {
+          dispatch(deleteProj(proj.id));
+        }}
+      >
+        Delete
+      </button>
+      <button onClick={showEditForm}>Edit</button>
       <div className="project-form">
-        <form ref={editform} onSubmit={save} className="form-update">
+        <form
+          style={{ display: "none" }}
+          onSubmit={event => {
+            event.preventDefault();
+            dispatch(editProj(proj.id, name, description));
+          }}
+          ref={editform}
+          className="form-update"
+        >
           <fieldset>
-            <input type="text" ref={editname} placeholder="name" /> <br />
+            <input
+              type="text"
+              ref={editname}
+              placeholder="name"
+              onBlur={e => setName(e.target.value)}
+            />{" "}
+            <br />
             <input
               type="text"
               ref={editdescription}
-              name="description"
+              onBlur={e => setDescription(e.target.value)}
+              DessetDescription="description"
               placeholder="description"
               id="description"
             />{" "}
@@ -52,7 +71,8 @@ function OneProject(props) {
           </fieldset>
         </form>
       </div>
-    </div>
+    </li>
   );
-}
+};
+
 export default OneProject;

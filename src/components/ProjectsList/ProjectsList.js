@@ -1,25 +1,18 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import OneProject from "../OneProject/OneProject";
+import { getProjs } from "../redux/selectors";
 
 function AllProjects(props) {
-  var projects = props.projects.map((project, index) => {
-    return (
-      <OneProject
-        index={index}
-        projects={projects}
-        project={project}
-        editProject={props.editProject}
-        markToDone={props.markToDone}
-        removeProject={props.removeProject}
-      ></OneProject>
-    );
-  });
-
+  const projs = useSelector(getProjs);
   return (
-    <div className="projectlist">
-      Your project: <br /> {projects}
-    </div>
+    <ul className="proj-list">
+      {projs && projs.length
+        ? projs.map((proj) => {
+          return <OneProject key={`proj-${proj.id}`} proj={proj} />;
+        })
+        : "Проэктов еще нет! "}
+    </ul>
   );
 }
-
 export default AllProjects;
