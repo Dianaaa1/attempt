@@ -9,8 +9,8 @@ function AllProjects(props) {
     <ul className="proj-list">
       {projs && projs.length
         ? projs.map((proj) => {
-          return <OneProject key={`proj-${proj.id}`} proj={proj} />;
-        })
+            return <OneProject key={proj.id} proj={proj} />;
+          })
         : "Проэктов еще нет! "}
     </ul>
   );

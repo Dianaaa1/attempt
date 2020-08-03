@@ -50,9 +50,9 @@ function Form(props) {
             onBlur={(e) => setName(e.target.value)}
           />
           <div classNames="errors">
-          {formik.errors.name && formik.touched.name && (
-            <p>{formik.errors.name}</p>
-          )}
+            {formik.errors.name && formik.touched.name && (
+              <p>{formik.errors.name}</p>
+            )}
           </div>
         </div>
         <div>
@@ -65,9 +65,9 @@ function Form(props) {
             onBlur={(e) => setDescription(e.target.value)}
           />
           <div className="errors">
-          {formik.errors.description && formik.touched.description && (
-            <p>{formik.errors.description}</p>
-          )}
+            {formik.errors.description && formik.touched.description && (
+              <p>{formik.errors.description}</p>
+            )}
           </div>
         </div>
         <div>
