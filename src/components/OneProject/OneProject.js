@@ -1,6 +1,6 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
-import cx from "classnames";
+import '../OneProject/style.css';
 import { toggleProj, deleteProj, editProj } from "../redux/actions/action";
 
 const OneProject = ({ proj }) => {
@@ -16,18 +16,16 @@ const OneProject = ({ proj }) => {
   };
 
   const dispatch = useDispatch();
-  const [name, setName] = useState({ name: "" });
-  const [description, setDescription] = useState({ name: "" });
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
 
   return (
     <li className="proj-item">
       <div onClick={() => dispatch(toggleProj(proj.id))}>
-        {proj && proj.completed ? "👌" : "👋"}{" "}
+        {proj && proj.completed ? "👌" : "✍"}{" "}
         <span
-          className={cx(
-            "proj-item__text",
-            proj && proj.completed && "proj-item__text--completed"
-          )}
+          className={
+            proj && proj.completed ? "done" : "undone"}
         >
           Name: {proj.name} <br /> Descripiton: {proj.description}
         </span>
@@ -45,7 +43,11 @@ const OneProject = ({ proj }) => {
           style={{ display: "none" }}
           onSubmit={event => {
             event.preventDefault();
+            if(name==="" || description ==="")
+            {alert("Введите все данные")
+            return}
             dispatch(editProj(proj.id, name, description));
+            event.target.reset()
           }}
           ref={editform}
           className="form-update"

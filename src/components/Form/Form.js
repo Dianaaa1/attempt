@@ -1,69 +1,79 @@
 import React, { useState } from "react";
 import "./style.css";
 import { useDispatch } from "react-redux";
-import { Formik } from "formik";
+import { useFormik } from "formik";
 import { Redirect } from "react-router-dom";
 import { addProj } from "../redux/actions/action";
+import * as Yup from "yup";
 
 function Form(props) {
   const dispatch = useDispatch();
   const [name, setName] = useState({ name: "" });
   const [description, setDescription] = useState({ name: "" });
   const [auth, logout] = useState(true);
+
+  const formik = useFormik({
+    initialValues: {
+      name: "",
+      description: "",
+    },
+    validationSchema: Yup.object({
+      name: Yup.string().required("Required!"),
+      description: Yup.string().required("Required!"),
+    }),
+    onSubmit: (values) => {
+      dispatch(addProj(name, description));
+      formik.handleReset();
+    },
+  });
+
   //функция logout выполняется внутри и сразу же при рендировании Login page
   if (!auth)
-    return <Redirect
-      to={{
-        pathname: "/login",
-      }} />
+    return (
+      <Redirect
+        to={{
+          pathname: "/login",
+        }}
+      />
+    );
   return (
     <div>
       <button onClick={() => logout(false)}>Logout</button>
-      <Formik
-        initialValues={{ name: "", description: "" }}
-        onSubmit={() => dispatch(addProj(name, description))}
-      >
-        {props => {
-          const { values, handleChange, handleSubmit, handleReset } = props;
-          return (
-            <form onSubmit={handleSubmit}>
-              <label htmlFor="name" style={{ display: "block" }}>
-                Name
-              </label>
-              <input
-                id="name"
-                placeholder="Name"
-                type="text"
-                value={values.name}
-                onChange={handleChange}
-                onBlur={e => setName(e.target.value)}
-                className="project-name"
-              />
-              <label htmlFor="description" style={{ display: "block" }}>
-                Description
-              </label>
-              <input
-                id="description"
-                placeholder="Description"
-                type="text"
-                value={values.description}
-                onChange={handleChange}
-                onBlur={e => setDescription(e.target.value)}
-                className="project-name"
-              />
-              <br />
-              <button
-                type="submit"
-                onClick={() => {
-                  handleReset();
-                }}
-              >
-                Add
-                        </button>
-            </form>
-          );
-        }}
-      </Formik>
+      <form onSubmit={formik.handleSubmit}>
+        <div>
+          <label> Name</label>
+          <input
+            type="text"
+            name="name"
+            value={formik.values.name}
+            onChange={formik.handleChange}
+            onBlur={(e) => setName(e.target.value)}
+          />
+          <div classNames="errors">
+          {formik.errors.name && formik.touched.name && (
+            <p>{formik.errors.name}</p>
+          )}
+          </div>
+        </div>
+        <div>
+          <label>Description</label>
+          <input
+            type="text"
+            name="description"
+            value={formik.values.description}
+            onChange={formik.handleChange}
+            onBlur={(e) => setDescription(e.target.value)}
+          />
+          <div className="errors">
+          {formik.errors.description && formik.touched.description && (
+            <p>{formik.errors.description}</p>
+          )}
+          </div>
+        </div>
+        <div>
+          <button type="submit">Add</button>
+        </div>
+      </form>
     </div>
   );
 }
