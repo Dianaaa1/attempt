@@ -9,7 +9,7 @@ import * as Yup from "yup";
 function Form(props) {
   const dispatch = useDispatch();
   const [name, setName] = useState({ name: "" });
-  const [description, setDescription] = useState({ name: "" });
+  const [description, setDescription] = useState({ description: "" });
   const [auth, logout] = useState(true);
 
   const formik = useFormik({
@@ -49,7 +49,7 @@ function Form(props) {
             onChange={formik.handleChange}
             onBlur={(e) => setName(e.target.value)}
           />
-          <div classNames="errors">
+          <div className="errors">
             {formik.errors.name && formik.touched.name && (
               <p>{formik.errors.name}</p>
             )}

@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import "../OneProject/style.css";
 import { toggleProj, deleteProj, editProj } from "../redux/actions/action";
 
-const OneProject = ({ proj }) => {
+const OneProject = ( {proj} ) => {
   const editform = useRef(null);
   const editname = useRef(null);
   const editdescription = useRef(null);
