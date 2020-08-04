@@ -5,13 +5,9 @@ import { toggleProj, deleteProj, editProj } from "../redux/actions/action";
 
 const OneProject = ( {proj} ) => {
   const editform = useRef(null);
-  const editname = useRef(null);
-  const editdescription = useRef(null);
   //открываем-закрываем форму редактирования
   const showEditForm = () => {
-    if (editform.current.style.display === "none")
-      editform.current.style.display = "block";
-    else editform.current.style.display = "none";
+    editform.current.style.display === "none"? editform.current.style.display = "block": editform.current.style.display = "none";
   };
 
   const dispatch = useDispatch();
@@ -54,14 +50,14 @@ const OneProject = ( {proj} ) => {
             <fieldset>
               <input
                 type="text"
-                ref={editname}
+                
                 placeholder="name"
                 onBlur={(e) => setName(e.target.value)}
               />{" "}
               <br />
               <input
                 type="text"
-                ref={editdescription}
+               
                 onBlur={(e) => setDescription(e.target.value)}
                 DessetDescription="description"
                 placeholder="description"

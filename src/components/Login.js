@@ -1,15 +1,15 @@
-import React, { useState } from "react";
+import React from "react";
 import { Redirect } from "react-router-dom";
 import { Formik } from "formik";
+import { useDispatch, useSelector } from "react-redux";
+import { authUser } from "./redux/actions/action";
+import { getAuthStatus } from "./redux/selectors";
 
 function Login() {
-  logout();
-  const [user, updateInf] = useState({
-    username: "",
-    password: "",
-    error: "",
-    login: false,
-  });
+  //logout();
+
+  const dispatch = useDispatch();
+  const logStatus = useSelector(getAuthStatus);
   const onSubmit = (obj) => {
     const username = obj.username;
     const password = obj.password;
@@ -21,12 +21,13 @@ function Login() {
     }
 
     login(username, password).then((user) => {
-      if (localStorage.getItem("user", JSON.stringify(user)))
-        updateInf({ login: true });
+      if (localStorage.getItem("user", JSON.stringify(user))) {
+        dispatch(authUser(true));
+      }
     });
   };
   // если пользователь залогинен то перенаправляем на форму создания проектов
-  if (user.login) {
+  if (logStatus) {
     return (
       <Redirect
         to={{
@@ -90,11 +91,6 @@ function login(username, password) {
       (error) => alert(error)
     );
 }
-
-function logout() {
-  localStorage.removeItem("user");
-}
-
 async function handleResponse(response) {
   const data = await response.text().then((text) => JSON.parse(text));
   return data;

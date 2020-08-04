@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import "./style.css";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useFormik } from "formik";
 import { Redirect } from "react-router-dom";
-import { addProj } from "../redux/actions/action";
+import { addProj, authUser } from "../redux/actions/action";
 import * as Yup from "yup";
+import { getAuthStatus } from "../redux/selectors";
 
 function Form(props) {
   const dispatch = useDispatch();
   const [name, setName] = useState({ name: "" });
   const [description, setDescription] = useState({ description: "" });
-  const [auth, logout] = useState(true);
 
   const formik = useFormik({
     initialValues: {
@@ -21,14 +21,15 @@ function Form(props) {
       name: Yup.string().required("Required!"),
       description: Yup.string().required("Required!"),
     }),
-    onSubmit: (values) => {
+    onSubmit: () => {
       dispatch(addProj(name, description));
       formik.handleReset();
     },
   });
 
   //функция logout выполняется внутри и сразу же при рендировании Login page
-  if (!auth)
+  const auth = useSelector(getAuthStatus);
+  if (!auth) {
     return (
       <Redirect
         to={{
@@ -36,9 +37,13 @@ function Form(props) {
         }}
       />
     );
+  }
+
   return (
     <div>
-      <button onClick={() => logout(false)}>Logout</button>
+      <button onClick={() => {
+        localStorage.removeItem("user");
+        dispatch(authUser(false))}}>Logout</button>
       <form onSubmit={formik.handleSubmit}>
         <div>
           <label> Name</label>
