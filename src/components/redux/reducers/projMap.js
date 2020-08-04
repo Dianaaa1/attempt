@@ -7,7 +7,7 @@ import {
 
 const defaultState = {};
 
-const projMap = (state = defaultState, action) => {
+const projectMap = (state = defaultState, action) => {
   switch (action.type) {
     case ADD_PROJ: {
       const { id, name, description } = action.payload;
@@ -47,4 +47,4 @@ const projMap = (state = defaultState, action) => {
   }
 };
 
-export default projMap;
+export default projectMap;

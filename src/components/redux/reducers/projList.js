@@ -1,7 +1,7 @@
 import { ADD_PROJ } from "../actions/actionType";
 
 const defaultState = [];
-const projList = (state = defaultState, action) => {
+const projectList = (state = defaultState, action) => {
   switch (action.type) {
     case ADD_PROJ: {
       const { id } = action.payload;
@@ -12,4 +12,4 @@ const projList = (state = defaultState, action) => {
   }
 };
 
-export default projList;
+export default projectList;

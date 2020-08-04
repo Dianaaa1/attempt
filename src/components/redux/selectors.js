@@ -1,10 +1,8 @@
-export const getProjList = (store) => store.projList;
+export const getProjectList = (store) => store.projectList;
 
-export const getProjById = (store, id) => ({ ...store.projMap[id], id });
+export const getProjectById = (store, id) => ({ ...store.projectMap[id], id });
 
-export const getProjs = (store) =>
-  getProjList(store).map((id) => getProjById(store, id));
-
+export const getProjects = (store) => getProjectList(store).map((id) => getProjectById(store, id));
 
 export const getAuth=(store) => store.authorization;
 

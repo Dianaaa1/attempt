@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import "./style.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useFormik } from "formik";
 import { Redirect } from "react-router-dom";
-import { addProj, authUser } from "../redux/actions/action";
+import { addProject, authUser } from "../redux/actions/action";
 import * as Yup from "yup";
 import { getAuthStatus } from "../redux/selectors";
 
@@ -22,28 +22,25 @@ function Form(props) {
       description: Yup.string().required("Required!"),
     }),
     onSubmit: () => {
-      dispatch(addProj(name, description));
+      dispatch(addProject(name, description));
       formik.handleReset();
     },
   });
 
   //функция logout выполняется внутри и сразу же при рендировании Login page
   const auth = useSelector(getAuthStatus);
-  if (!auth) {
-    return (
-      <Redirect
-        to={{
-          pathname: "/login",
-        }}
-      />
-    );
-  }
 
   return (
     <div>
-      <button onClick={() => {
-        localStorage.removeItem("user");
-        dispatch(authUser(false))}}>Logout</button>
+      <button
+        onClick={() => {
+          localStorage.removeItem("user");
+          dispatch(authUser(false));
+        }}
+      >
+        Logout
+      </button>
+      {!auth ? <Redirect to={{ pathname: "/login" }} /> : <div></div>}
       <form onSubmit={formik.handleSubmit}>
         <div>
           <label> Name</label>
@@ -51,8 +48,8 @@ function Form(props) {
             type="text"
             name="name"
             value={formik.values.name}
-            onChange={formik.handleChange}
-            onBlur={(e) => setName(e.target.value)}
+            onChange={useCallback(formik.handleChange, [])}
+            onBlur={useCallback((e) => setName(e.target.value), [])}
           />
           <div className="errors">
             {formik.errors.name && formik.touched.name && (
@@ -66,8 +63,8 @@ function Form(props) {
             type="text"
             name="description"
             value={formik.values.description}
-            onChange={formik.handleChange}
-            onBlur={(e) => setDescription(e.target.value)}
+            onBlur={useCallback((e) => setDescription(e.target.value), [])}
+            onChange={useCallback(formik.handleChange, [])}
           />
           <div className="errors">
             {formik.errors.description && formik.touched.description && (

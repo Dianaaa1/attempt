@@ -2,7 +2,7 @@ import { ADD_PROJ, TOGGLE_PROJ, EDIT_PROJ, DELETE_PROJ, AUTH_USER } from "./acti
 
 let nextId = 0;
 
-export const addProj = (name, description) => ({
+export const addProject = (name, description) => ({
   type: ADD_PROJ,
   payload: {
     id: ++nextId,
@@ -10,15 +10,15 @@ export const addProj = (name, description) => ({
     description
   }
 });
-export const toggleProj = id => ({
+export const toggleProject = id => ({
   type: TOGGLE_PROJ,
   payload: { id }
 });
-export const editProj = (id, name, description) => ({
+export const editProject = (id, name, description) => ({
   type: EDIT_PROJ,
   payload: { id, name, description }
 });
-export const deleteProj = id => ({
+export const deleteProject = id => ({
   type: DELETE_PROJ,
   payload: { id }
 });

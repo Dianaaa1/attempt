@@ -1,7 +1,7 @@
 import { combineReducers, createStore } from "redux";
-import projList from "./projList";
-import projMap from "./projMap";
+import projectList from "./projList";
+import projectMap from "./projMap";
 import authorization from './authUser';
 
-const rootReducer = combineReducers({ projList, projMap, authorization});
+const rootReducer = combineReducers({ projectList, projectMap, authorization});
 export default createStore(rootReducer);
