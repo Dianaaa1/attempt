@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect, useCallback } from "react";
+import React, { useRef, useState, useCallback } from "react";
 import { useDispatch } from "react-redux";
 import "../OneProject/style.css";
 import {
@@ -42,7 +42,7 @@ const OneProject = ({ project }) => {
       className="proj-item"
       style={!project.name ? { display: "none" } : { display: "block" }}
     >
-      <div onClick={() => dispatch(toggleProject(project.id))}>
+      <div onClick={useCallback(() => dispatch(toggleProject(project.id)),[dispatch, project.id])}>
         {project && project.completed ? "👌" : "✍"}{" "}
         <span className={project && project.completed ? "done" : "undone"}>
           Name: {project.name} <br /> Descripiton: {project.description}
