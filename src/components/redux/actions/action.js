@@ -1,4 +1,4 @@
-import { ADD_PROJ, TOGGLE_PROJ, EDIT_PROJ, DELETE_PROJ, AUTH_USER } from "./actionType";
+import { ADD_PROJ, TOGGLE_PROJ, EDIT_PROJ, DELETE_PROJ, AUTH_USER, USER_DATA } from "./actionType";
 
 let nextId = 0;
 
@@ -25,4 +25,8 @@ export const deleteProject = id => ({
 export const authUser=login => ({
   type: AUTH_USER,
   payload: { login } 
+})
+export const userData=(username, password)=>({
+  type: USER_DATA,
+  payload: {username, password}
 })

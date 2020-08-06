@@ -1,82 +1,82 @@
-import React from "react";
+import React, { useState, useCallback } from "react";
 import { Redirect } from "react-router-dom";
-import { Formik } from "formik";
+import {  useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
-import { authUser } from "./redux/actions/action";
+import { authUser, userData } from "./redux/actions/action";
 import { getAuthStatus } from "./redux/selectors";
+import * as Yup from "yup";
 
 function Login() {
   //logout();
 
   const dispatch = useDispatch();
   const logStatus = useSelector(getAuthStatus);
-  const onSubmit = (obj) => {
-    const username = obj.username;
-    const password = obj.password;
 
-    //останавливается если форма пустая
-    if (!(username && password)) {
-      alert("Введите все данные");
-      return;
-    }
+  const [username, setUsername] = useState({ username: "" });
+  const [password, setPassword] = useState({ password: "" });
 
-    login(username, password).then((user) => {
-      if (localStorage.getItem("user", JSON.stringify(user))) {
-        dispatch(authUser(true));
-      }
-    });
-  };
-  // если пользователь залогинен то перенаправляем на форму создания проектов
-  if (logStatus) {
-    return (
-      <Redirect
-        to={{
-          pathname: "/form",
-        }}
-      />
-    );
-  }
+  const formik = useFormik({
+    initialValues: {
+      username: "",
+      password: "",
+    },
+    validationSchema: Yup.object({
+      username: Yup.string().required("Required!"),
+      password: Yup.string().required("Required!"),
+    }),
+    onSubmit: () => {
+      dispatch(userData(username, password))
+
+      login(username, password).then((user) => {
+        if (localStorage.getItem("user", JSON.stringify(user))) {
+          dispatch(authUser(true));
+        }
+      });
+    },
+  });
+
   return (
     <div>
-      <Formik
-        initialValues={{ username: "", password: "" }}
-        onSubmit={onSubmit}
-      >
-        {(props) => {
-          const { values, handleChange, handleSubmit, handleReset } = props;
-          return (
-            <form onSubmit={handleSubmit}>
-              <label htmlFor="username">Username</label>
-              <input
-                id="username"
-                placeholder="username"
-                type="text"
-                value={values.username}
-                onChange={handleChange}
-              />
-              <br />
-              <label htmlFor="password">Password</label>
-              <input
-                id="password"
-                placeholder="password"
-                type="password"
-                value={values.password}
-                onChange={handleChange}
-                className="project-name"
-              />
-              <br />
-              <button type="submit">Login</button>
-              <button type="button" onClick={handleReset}>
-                Reset
-              </button>
-            </form>
-          );
-        }}
-      </Formik>
+      {logStatus? <Redirect to={{ pathname: "/form"}}/>: <div></div> }
+      <form onSubmit={formik.handleSubmit}>
+        <div>
+          <label> Username</label>
+          <input
+            type="text"
+            name="username"
+            value={formik.values.username}
+            onChange={useCallback(formik.handleChange, [])}
+            onBlur={useCallback((e) => setUsername(e.target.value), [])}
+          />
+          <div className="errors">
+            {formik.errors.username && formik.touched.username && (
+              <p>{formik.errors.username}</p>
+            )}
+          </div>
+        </div>
+        <div>
+          <label>Password</label>
+          <input
+            type="text"
+            name="password"
+            value={formik.values.password}
+            onBlur={useCallback((e) => setPassword(e.target.value), [])}
+            onChange={useCallback(formik.handleChange, [])}
+          />
+          <div className="errors">
+            {formik.errors.password && formik.touched.password && (
+              <p>{formik.errors.password}</p>
+            )}
+          </div>
+        </div>
+        <div>
+          <button type="submit">Login</button>
+        </div>
+      </form>
     </div>
   );
 }
-
+export default Login;
 function login(username, password) {
   const requestOptions = {
     method: "POST",
@@ -95,4 +95,3 @@ async function handleResponse(response) {
   const data = await response.text().then((text) => JSON.parse(text));
   return data;
 }
-export default Login;

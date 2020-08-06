@@ -11,7 +11,6 @@ function Form(props) {
   const dispatch = useDispatch();
   const [name, setName] = useState({ name: "" });
   const [description, setDescription] = useState({ description: "" });
-
   const formik = useFormik({
     initialValues: {
       name: "",
