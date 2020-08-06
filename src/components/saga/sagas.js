@@ -4,9 +4,9 @@ import { getAuthStatus, getAuth } from "../redux/selectors";
 import { jsonData, authUser } from "../redux/actions/action";
 
 function* toWelcome() {
-  const userr=yield select(getAuth);
-  let username=userr.username;
-  let password=userr.password;
+  const user=yield select(getAuth);
+  let username=user.username;
+  let password=user.password;
   const requestOptions = {
     method: "POST",
     body: JSON.stringify({username, password }),
@@ -32,7 +32,6 @@ function* toWelcome() {
   //приветствуем полльзователя
   yield delay(1000);
   const loginStatus = yield select(getAuthStatus);
-  const user = yield select(getAuth);
   if (loginStatus) alert("Welcome ,  " + user.username);
 }
 export default function* rootSaga() {
