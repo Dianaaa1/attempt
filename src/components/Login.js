@@ -2,13 +2,12 @@ import React, { useState, useCallback } from "react";
 import { Redirect } from "react-router-dom";
 import {  useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
-import { authUser, userData } from "./redux/actions/action";
+import { userData } from "./redux/actions/action";
 import { getAuthStatus } from "./redux/selectors";
 import * as Yup from "yup";
 
 function Login() {
-  //logout();
-
+  
   const dispatch = useDispatch();
   const logStatus = useSelector(getAuthStatus);
 
@@ -26,15 +25,10 @@ function Login() {
     }),
     onSubmit: () => {
       dispatch(userData(username, password))
-
-      login(username, password).then((user) => {
-        if (localStorage.getItem("user", JSON.stringify(user))) {
-          dispatch(authUser(true));
-        }
-      });
+      
     },
   });
-
+  
   return (
     <div>
       {logStatus? <Redirect to={{ pathname: "/form"}}/>: <div></div> }
@@ -57,7 +51,7 @@ function Login() {
         <div>
           <label>Password</label>
           <input
-            type="text"
+            type="password"
             name="password"
             value={formik.values.password}
             onBlur={useCallback((e) => setPassword(e.target.value), [])}
@@ -77,6 +71,7 @@ function Login() {
   );
 }
 export default Login;
+/*
 function login(username, password) {
   const requestOptions = {
     method: "POST",
@@ -95,3 +90,4 @@ async function handleResponse(response) {
   const data = await response.text().then((text) => JSON.parse(text));
   return data;
 }
+*/

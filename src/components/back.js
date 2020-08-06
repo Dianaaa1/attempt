@@ -26,8 +26,7 @@ export function configureFakeBackend() {
             let responseJson = {
               id: user.id,
               username: user.username,
-              firstName: user.firstName,
-              lastName: user.lastName,
+              password: user.password
             };
             resolve({
               ok: true,

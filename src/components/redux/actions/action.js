@@ -1,4 +1,4 @@
-import { ADD_PROJ, TOGGLE_PROJ, EDIT_PROJ, DELETE_PROJ, AUTH_USER, USER_DATA } from "./actionType";
+import { ADD_PROJ, TOGGLE_PROJ, EDIT_PROJ, DELETE_PROJ, AUTH_USER, USER_DATA, GETJSON } from "./actionType";
 
 let nextId = 0;
 
@@ -29,4 +29,8 @@ export const authUser=login => ({
 export const userData=(username, password)=>({
   type: USER_DATA,
   payload: {username, password}
+})
+export const jsonData=(json)=>({
+  type: GETJSON,
+  payload: json
 })
