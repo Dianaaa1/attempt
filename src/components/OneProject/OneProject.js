@@ -8,6 +8,16 @@ import {
 } from "../redux/actions/action";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import {
+  ListItem,
+  Box,
+  Typography,
+  ButtonGroup,
+  Button,
+  TextField,
+  FormControl,
+  makeStyles,
+} from "@material-ui/core";
 
 const OneProject = ({ project }) => {
   const editform = useRef(null);
@@ -38,24 +48,45 @@ const OneProject = ({ project }) => {
   });
 
   return (
-    <li
+    <ListItem
       className="proj-item"
       style={!project.name ? { display: "none" } : { display: "block" }}
     >
-      <div onClick={useCallback(() => dispatch(toggleProject(project.id)),[dispatch, project.id])}>
-        {project && project.completed ? "👌" : "✍"}{" "}
-        <span className={project && project.completed ? "done" : "undone"}>
-          Name: {project.name} <br /> Descripiton: {project.description}
-        </span>
-      </div>
-      <button
-        onClick={useCallback(() => {
-          dispatch(deleteProject(project.id));
-        }, [dispatch, project.id])}
+      <Box
+        component="div"
+        class={project && project.completed ? "done" : "undone"}
+        onClick={useCallback(() => dispatch(toggleProject(project.id)), [
+          dispatch,
+          project.id,
+        ])}
       >
-        Delete
-      </button>
-      <button onClick={useCallback(showEditForm, [])}>Edit</button>
+        {project && project.completed ? "👌" : "✍"}{" "}
+        <Typography display="inline" variant="h6">
+          {" "}
+          Name:{" "}
+        </Typography>{" "}
+        {project.name} <br />
+        <Typography display="inline" variant="h6">
+          {" "}
+          Descripiton:{" "}
+        </Typography>{" "}
+        {project.description} <br />
+      </Box>
+      <ButtonGroup
+        variant="text"
+        color="secondary"
+        aria-label="text primary button group"
+      >
+        <Button
+          color="secondary"
+          onClick={useCallback(() => {
+            dispatch(deleteProject(project.id));
+          }, [dispatch, project.id])}
+        >
+          Delete{" "}
+        </Button>
+        <Button onClick={useCallback(showEditForm, [])}>Edit</Button>
+      </ButtonGroup>
       <div className="project-form">
         <form
           style={{ display: "none" }}
@@ -63,40 +94,42 @@ const OneProject = ({ project }) => {
           ref={editform}
           className="form-update"
         >
-          <fieldset>
-            <input
-              type="text"
-              name="name"
-              placeholder="name"
-              value={formik.values.name}
-              onChange={useCallback(formik.handleChange, [])}
-              onBlur={useCallback((e) => setName(e.target.value), [])}
-            />
-            <div className="errors">
-              {formik.errors.name && formik.touched.name && (
-                <p>{formik.errors.name}</p>
-              )}
-            </div>
-            <br />
-            <input
-              type="text"
-              name="description"
-              value={formik.values.description}
-              onBlur={useCallback((e) => setDescription(e.target.value), [])}
-              onChange={useCallback(formik.handleChange, [])}
-              placeholder="description"
-            />
-            <div className="errors">
-              {formik.errors.description && formik.touched.description && (
-                <p>{formik.errors.description}</p>
-              )}
-            </div>
-            <br />
-            <input type="submit" value="Save Project" />
-          </fieldset>
+          <TextField
+            fullWidth
+            type="text"
+            name="name"
+            label="name"
+            value={formik.values.name}
+            onChange={useCallback(formik.handleChange, [])}
+            onBlur={useCallback((e) => setName(e.target.value), [])}
+          />
+          <div className="errors">
+            {formik.errors.name && formik.touched.name && (
+              <p>{formik.errors.name}</p>
+            )}
+          </div>
+          <br />
+          <TextField
+            fullWidth
+            type="text"
+            name="description"
+            value={formik.values.description}
+            onBlur={useCallback((e) => setDescription(e.target.value), [])}
+            onChange={useCallback(formik.handleChange, [])}
+            label="description"
+          />
+          <div className="errors">
+            {formik.errors.description && formik.touched.description && (
+              <p>{formik.errors.description}</p>
+            )}
+          </div>
+          <br />
+          <Button variant="contained" type="submit" color="secondary">
+            Save
+          </Button>
         </form>
       </div>
-    </li>
+    </ListItem>
   );
 };
 

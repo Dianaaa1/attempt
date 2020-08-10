@@ -11,6 +11,7 @@ label {
 form {
   margin: 70px auto;
   max-width: 500px;
+  text-align: center;
   padding: 20px 0;
 }
 
@@ -21,5 +22,9 @@ form {
 
 button {
   margin-top: 20px;
+}
+
+fieldset {
+  padding: 50px;
 }
 /*# sourceMappingURL=style.css.map */

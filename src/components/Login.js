@@ -1,13 +1,13 @@
 import React, { useState, useCallback } from "react";
 import { Redirect } from "react-router-dom";
-import {  useFormik } from "formik";
+import { useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { userData } from "./redux/actions/action";
 import { getAuthStatus } from "./redux/selectors";
 import * as Yup from "yup";
+import { Button, TextField } from "@material-ui/core";
 
 function Login() {
-  
   const dispatch = useDispatch();
   const logStatus = useSelector(getAuthStatus);
 
@@ -24,18 +24,18 @@ function Login() {
       password: Yup.string().required("Required!"),
     }),
     onSubmit: () => {
-      dispatch(userData(username, password))
-      
+      dispatch(userData(username, password));
     },
   });
-  
+
   return (
     <div>
-      {logStatus? <Redirect to={{ pathname: "/form"}}/>: <div></div> }
+      {logStatus ? <Redirect to={{ pathname: "/form" }} /> : <div></div>}
       <form onSubmit={formik.handleSubmit}>
         <div>
-          <label> Username</label>
-          <input
+          <TextField
+            label="Username"
+            variant="filled"
             type="text"
             name="username"
             value={formik.values.username}
@@ -49,8 +49,9 @@ function Login() {
           </div>
         </div>
         <div>
-          <label>Password</label>
-          <input
+          <TextField
+            label="Password"
+            variant="filled"
             type="password"
             name="password"
             value={formik.values.password}
@@ -64,30 +65,10 @@ function Login() {
           </div>
         </div>
         <div>
-          <button type="submit">Login</button>
+          <Button type="submit" color="primary" variant="contained">Login</Button>
         </div>
       </form>
     </div>
   );
 }
 export default Login;
-/*
-function login(username, password) {
-  const requestOptions = {
-    method: "POST",
-    body: JSON.stringify({ username, password }),
-  };
-  return fetch(`/users/authenticate`, requestOptions)
-    .then(handleResponse)
-    .then(
-      (user) => {
-        localStorage.setItem("user", JSON.stringify(user));
-      },
-      (error) => alert(error)
-    );
-}
-async function handleResponse(response) {
-  const data = await response.text().then((text) => JSON.parse(text));
-  return data;
-}
-*/
