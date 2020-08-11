@@ -1,41 +1,32 @@
 .done{
     color: gray; 
     text-decoration: line-through;
+    text-align: center;
 }
 .done, .undone{
     cursor: pointer; 
     margin-top: 30px;
+    text-align: center;
 }
 div{
     margin: 5px;
+   
 }
 .title{
     font-size: 20px;
 }
-#update{
-    display: none;
-}
-.project{
-    .item-name{
-        font-weight: bold;
-    }
-    .title-description{
-        font-size: 15px;
-    }
-    .item-description{
-        font-size: 13px;
-    }
-}
+
 .form-update{
-    display: none;
     margin: 10px auto;
     max-width: 170px;
     padding: 10px 0;
-    input{
-        padding: 5px;
-        margin: 5px;
-    }
 }
 button{
     margin: 5px;
+}
+.proj-item{
+    text-align: center;
+}
+.but-group{
+    text-align: center;
 }

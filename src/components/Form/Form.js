@@ -32,7 +32,9 @@ function Form() {
 
   return (
     <div>
-      <Button variant="contained" color="primary"
+      <Button
+        variant="contained"
+        color="primary"
         onClick={() => {
           localStorage.removeItem("user");
           dispatch(authUser(false));
@@ -75,7 +77,9 @@ function Form() {
           </div>
         </div>
         <div>
-          <Button color="secondary" variant="contained" type="submit">Add</Button>
+          <Button color="secondary" variant="contained" type="submit">
+            Add
+          </Button>
         </div>
       </form>
     </div>

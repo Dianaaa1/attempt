@@ -65,7 +65,9 @@ function Login() {
           </div>
         </div>
         <div>
-          <Button type="submit" color="primary" variant="contained">Login</Button>
+          <Button type="submit" color="primary" variant="contained">
+            Login
+          </Button>
         </div>
       </form>
     </div>

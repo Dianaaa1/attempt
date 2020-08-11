@@ -15,8 +15,6 @@ import {
   ButtonGroup,
   Button,
   TextField,
-  FormControl,
-  makeStyles,
 } from "@material-ui/core";
 
 const OneProject = ({ project }) => {
@@ -72,7 +70,9 @@ const OneProject = ({ project }) => {
         </Typography>{" "}
         {project.description} <br />
       </Box>
-      <ButtonGroup
+      <div className="but-group">
+      <ButtonGroup 
+      component="div"
         variant="text"
         color="secondary"
         aria-label="text primary button group"
@@ -86,7 +86,7 @@ const OneProject = ({ project }) => {
           Delete{" "}
         </Button>
         <Button onClick={useCallback(showEditForm, [])}>Edit</Button>
-      </ButtonGroup>
+      </ButtonGroup></div>
       <div className="project-form">
         <form
           style={{ display: "none" }}
