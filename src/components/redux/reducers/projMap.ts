@@ -3,11 +3,12 @@ import {
   TOGGLE_PROJ,
   EDIT_PROJ,
   DELETE_PROJ,
+  actionType,
 } from "../actions/actionType";
 
-const defaultState = {};
+const defaultState:any = {};
 
-const projectMap = (state = defaultState, action) => {
+const projectMap = (state = defaultState, action: actionType) => {
   switch (action.type) {
     case ADD_PROJ: {
       const { id, name, description } = action.payload;
@@ -21,8 +22,8 @@ const projectMap = (state = defaultState, action) => {
       };
     }
     case TOGGLE_PROJ: {
-      const { id } = action.payload;
-      const currentTodo = state[id];
+      const  {id}  = action.payload;
+      const currentTodo= state[id];
       return {
         ...state,
         [id]: { ...currentTodo, completed: !currentTodo.completed },

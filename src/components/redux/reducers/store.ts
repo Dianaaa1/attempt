@@ -7,3 +7,5 @@ import createSagaMiddleware from "redux-saga";
 export const sagaMiddleware = createSagaMiddleware();
 const rootReducer = combineReducers({ projectList, projectMap, authorization});
 export default createStore(rootReducer, applyMiddleware(sagaMiddleware));
+
+export type RootState = ReturnType<typeof rootReducer>

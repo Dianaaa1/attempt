@@ -35,9 +35,9 @@ function Projects(props) {
         <BrowserRouter>
           <Button variant="contained" onClick={toggleTheme}>
             {theme.palette.type === "light" ? (
-              <span class="material-icons">nights_stay</span>
+              <span className="material-icons">nights_stay</span>
             ) : (
-              <span class="material-icons">wb_sunny</span>
+              <span className="material-icons">wb_sunny</span>
             )}
           </Button>
           <Route exact path="/">

@@ -8,10 +8,11 @@ import * as Yup from "yup";
 import { getAuthStatus } from "../redux/selectors";
 import { TextField, Button } from "@material-ui/core";
 
-function Form() {
+
+const Form:React.FC=()=> {
   const dispatch = useDispatch();
-  const [name, setName] = useState({ name: "" });
-  const [description, setDescription] = useState({ description: "" });
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -21,9 +22,9 @@ function Form() {
       name: Yup.string().required("Required!"),
       description: Yup.string().required("Required!"),
     }),
-    onSubmit: () => {
+    onSubmit: (event) => {
       dispatch(addProject(name, description));
-      formik.handleReset();
+      formik.handleReset(event);
     },
   });
 

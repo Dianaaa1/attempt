@@ -16,16 +16,26 @@ import {
   Button,
   TextField,
 } from "@material-ui/core";
+ 
+interface IoneProject{
+  project:{
+    name: string,
+    description: string,
+    completed: boolean,
+    id:number,
+  }
+}
 
-const OneProject = ({ project }) => {
-  const editform = useRef(null);
+const OneProject:React.FC <IoneProject>= (props) => {
+  let project=props.project
+  //const editform = useRef<HTMLFormElement>(null);
+  const editform = useRef() as React.MutableRefObject<HTMLFormElement>;
   //открываем-закрываем форму редактирования
   const showEditForm = () => {
     editform.current.style.display === "none"
       ? (editform.current.style.display = "block")
       : (editform.current.style.display = "none");
   };
-
   const dispatch = useDispatch();
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -39,12 +49,11 @@ const OneProject = ({ project }) => {
       name: Yup.string().required("Required!"),
       description: Yup.string().required("Required!"),
     }),
-    onSubmit: () => {
+    onSubmit: (ev) => {
       dispatch(editProject(project.id, name, description));
-      formik.handleReset();
+      formik.handleReset(ev);
     },
   });
-
   return (
     <ListItem
       className="proj-item"
@@ -52,7 +61,7 @@ const OneProject = ({ project }) => {
     >
       <Box
         component="div"
-        class={project && project.completed ? "done" : "undone"}
+        className={project && project.completed ? "done" : "undone"}
         onClick={useCallback(() => dispatch(toggleProject(project.id)), [
           dispatch,
           project.id,
@@ -85,6 +94,7 @@ const OneProject = ({ project }) => {
         >
           Delete{" "}
         </Button>
+        
         <Button onClick={useCallback(showEditForm, [])}>Edit</Button>
       </ButtonGroup></div>
       <div className="project-form">
