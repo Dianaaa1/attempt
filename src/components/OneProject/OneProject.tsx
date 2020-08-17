@@ -50,6 +50,7 @@ const OneProject:React.FC <IoneProject>= (props) => {
       description: Yup.string().required("Required!"),
     }),
     onSubmit: (ev) => {
+      alert(JSON.stringify(ev))
       dispatch(editProject(project.id, name, description));
       formik.handleReset(ev);
     },
@@ -111,7 +112,7 @@ const OneProject:React.FC <IoneProject>= (props) => {
             label="name"
             value={formik.values.name}
             onChange={useCallback(formik.handleChange, [])}
-            onBlur={useCallback((e) => setName(e.target.value), [])}
+            onBlur={useCallback((e: React.FocusEvent<HTMLInputElement>) => setName(e.target.value), [])}
           />
           <div className="errors">
             {formik.errors.name && formik.touched.name && (
@@ -124,7 +125,7 @@ const OneProject:React.FC <IoneProject>= (props) => {
             type="text"
             name="description"
             value={formik.values.description}
-            onBlur={useCallback((e) => setDescription(e.target.value), [])}
+            onBlur={useCallback((e: React.FocusEvent<HTMLInputElement>) => setDescription(e.target.value), [])}
             onChange={useCallback(formik.handleChange, [])}
             label="description"
           />

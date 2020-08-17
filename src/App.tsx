@@ -10,20 +10,21 @@ import {
   createMuiTheme,
   Button,
   CssBaseline,
+  PaletteType,
 } from "@material-ui/core";
 
 sagaMiddleware.run(rootSaga);
 
-function Projects(props) {
+const Projects:React.FC=()=>{
   const [theme, setTheme] = useState({
     palette: {
-      type: "light",
+      type: "light" as PaletteType,
     },
   });
 
   const toggleTheme = () => {
     let NewPaletteType = theme.palette.type === "light" ? "dark" : "light";
-    setTheme({ palette: { type: NewPaletteType } });
+    setTheme({ palette: { type: NewPaletteType as PaletteType} });
   };
 
   const muitheme = createMuiTheme(theme);

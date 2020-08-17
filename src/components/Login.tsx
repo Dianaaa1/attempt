@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback} from "react";
 import { Redirect } from "react-router-dom";
 import { useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,12 +7,12 @@ import { getAuthStatus } from "./redux/selectors";
 import * as Yup from "yup";
 import { Button, TextField } from "@material-ui/core";
 
-function Login() {
+const Login:React.FC=()=>{
   const dispatch = useDispatch();
   const logStatus = useSelector(getAuthStatus);
 
-  const [username, setUsername] = useState({ username: "" });
-  const [password, setPassword] = useState({ password: "" });
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
   const formik = useFormik({
     initialValues: {
@@ -40,7 +40,7 @@ function Login() {
             name="username"
             value={formik.values.username}
             onChange={useCallback(formik.handleChange, [])}
-            onBlur={useCallback((e) => setUsername(e.target.value), [])}
+            onBlur={useCallback((e: React.FocusEvent<HTMLInputElement>) => setUsername(e.target.value), [])}
           />
           <div className="errors">
             {formik.errors.username && formik.touched.username && (
@@ -55,7 +55,7 @@ function Login() {
             type="password"
             name="password"
             value={formik.values.password}
-            onBlur={useCallback((e) => setPassword(e.target.value), [])}
+            onBlur={useCallback((e: React.FocusEvent<HTMLInputElement>) => setPassword(e.target.value), [])}
             onChange={useCallback(formik.handleChange, [])}
           />
           <div className="errors">

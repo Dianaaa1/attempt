@@ -37,8 +37,13 @@ function* toWelcome() {
 export default function* rootSaga() {
   yield takeEvery("USER_DATA", toWelcome);
 }
+interface Idata{
+  id: number,
+  username: string,
+  password: string
+}
 
-async function handleResponse(response) {
-  const data = await response.text().then((text) => JSON.parse(text));
+async function handleResponse(response: Response) : Promise<Idata>{
+  const data = await response.text().then((text:string) => JSON.parse(text));
   return data;
 }

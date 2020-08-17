@@ -4,7 +4,7 @@ import OneProject from "../OneProject/OneProject";
 import { getProjects } from "../redux/selectors";
 import { List } from "@material-ui/core";
 
-function AllProjects(props) {
+const AllProjects:React.FC =()=> {
   const projects = useSelector(getProjects);
   return (
     <List className="proj-list">
@@ -12,7 +12,7 @@ function AllProjects(props) {
         ? projects.map((project) => {
             return <OneProject key={project.id} project={project} />;
           })
-        : "Проэктов еще нет! "}
+        : "Проэктов еще нет!"}
     </List>
   );
 }

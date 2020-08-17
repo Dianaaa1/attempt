@@ -53,7 +53,7 @@ const Form:React.FC=()=> {
             name="name"
             value={formik.values.name}
             onChange={useCallback(formik.handleChange, [])}
-            onBlur={useCallback((e) => setName(e.target.value), [])}
+            onBlur={useCallback((e: React.FocusEvent<HTMLInputElement>) => setName(e.target.value), [])}
           />
           <div className="errors">
             {formik.errors.name && formik.touched.name && (
@@ -68,7 +68,7 @@ const Form:React.FC=()=> {
             label="Description"
             name="description"
             value={formik.values.description}
-            onBlur={useCallback((e) => setDescription(e.target.value), [])}
+            onBlur={useCallback((e: React.FocusEvent<HTMLInputElement>) => setDescription(e.target.value), [])}
             onChange={useCallback(formik.handleChange, [])}
           />
           <div className="errors">
