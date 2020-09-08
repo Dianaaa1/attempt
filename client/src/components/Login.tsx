@@ -1,4 +1,4 @@
-import React, { useState, useCallback} from "react";
+import React, { useState, useCallback } from "react";
 import { Redirect } from "react-router-dom";
 import { useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,12 +7,13 @@ import { getAuthStatus } from "./redux/selectors";
 import * as Yup from "yup";
 import { Button, TextField } from "@material-ui/core";
 
-const Login:React.FC=()=>{
+const Login: React.FC = () => {
   const dispatch = useDispatch();
   const logStatus = useSelector(getAuthStatus);
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [message, setMessage] = useState("");
 
   const formik = useFormik({
     initialValues: {
@@ -23,10 +24,11 @@ const Login:React.FC=()=>{
       username: Yup.string().required("Required!"),
       password: Yup.string().required("Required!"),
     }),
-    onSubmit: () => {
+    onSubmit: async () => {
       dispatch(userData(username, password));
     },
   });
+  console.log("status:  ", logStatus);
 
   return (
     <div>
@@ -40,7 +42,11 @@ const Login:React.FC=()=>{
             name="username"
             value={formik.values.username}
             onChange={useCallback(formik.handleChange, [])}
-            onBlur={useCallback((e: React.FocusEvent<HTMLInputElement>) => setUsername(e.target.value), [])}
+            onBlur={useCallback(
+              (e: React.FocusEvent<HTMLInputElement>) =>
+                setUsername(e.target.value),
+              []
+            )}
           />
           <div className="errors">
             {formik.errors.username && formik.touched.username && (
@@ -55,7 +61,11 @@ const Login:React.FC=()=>{
             type="password"
             name="password"
             value={formik.values.password}
-            onBlur={useCallback((e: React.FocusEvent<HTMLInputElement>) => setPassword(e.target.value), [])}
+            onBlur={useCallback(
+              (e: React.FocusEvent<HTMLInputElement>) =>
+                setPassword(e.target.value),
+              []
+            )}
             onChange={useCallback(formik.handleChange, [])}
           />
           <div className="errors">
@@ -68,9 +78,10 @@ const Login:React.FC=()=>{
           <Button type="submit" color="primary" variant="contained">
             Login
           </Button>
+          <div>{message}</div>
         </div>
       </form>
     </div>
   );
-}
+};
 export default Login;

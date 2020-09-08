@@ -8,8 +8,7 @@ import * as Yup from "yup";
 import { getAuthStatus } from "../redux/selectors";
 import { TextField, Button } from "@material-ui/core";
 
-
-const Form:React.FC=()=> {
+const Form: React.FC = () => {
   const dispatch = useDispatch();
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -37,7 +36,7 @@ const Form:React.FC=()=> {
         variant="contained"
         color="primary"
         onClick={() => {
-          localStorage.removeItem("user");
+          localStorage.removeItem("token");
           dispatch(authUser(false));
         }}
       >
@@ -53,7 +52,11 @@ const Form:React.FC=()=> {
             name="name"
             value={formik.values.name}
             onChange={useCallback(formik.handleChange, [])}
-            onBlur={useCallback((e: React.FocusEvent<HTMLInputElement>) => setName(e.target.value), [])}
+            onBlur={useCallback(
+              (e: React.FocusEvent<HTMLInputElement>) =>
+                setName(e.target.value),
+              []
+            )}
           />
           <div className="errors">
             {formik.errors.name && formik.touched.name && (
@@ -68,7 +71,11 @@ const Form:React.FC=()=> {
             label="Description"
             name="description"
             value={formik.values.description}
-            onBlur={useCallback((e: React.FocusEvent<HTMLInputElement>) => setDescription(e.target.value), [])}
+            onBlur={useCallback(
+              (e: React.FocusEvent<HTMLInputElement>) =>
+                setDescription(e.target.value),
+              []
+            )}
             onChange={useCallback(formik.handleChange, [])}
           />
           <div className="errors">
@@ -85,5 +92,5 @@ const Form:React.FC=()=> {
       </form>
     </div>
   );
-}
+};
 export default Form;
