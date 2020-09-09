@@ -2,11 +2,15 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const passport = require('passport')
 const app = express();
+const cors = require('cors');
 
+app.use(cors())
+app.options('*', cors())
 app.use(passport.initialize());
 app.use(passport.session());
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
+  //res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,PATCH,OPTIONS');
   next();
 });
 
@@ -33,7 +37,6 @@ app.post('/login',
     var payload = { username: req.body.username };
     var token = jwt.sign(payload, jwtOptions.secretOrKey);
     res.json({ message: "ok", token: token });
-    res.send(`Hello ${req.body.username}, your password is: ${req.body.password}`);
   });
 //запрос на регистрацию
 app.post('/register', (req, res) => {
@@ -58,6 +61,7 @@ app.get('/home', passport.authenticate('jwt', { session: false }),
     res.send('ok');
   }
 );
+app.post('/todo', () => { })
 app.listen(4000, () => {
   console.log("Started on PORT 4000");
 });

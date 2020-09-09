@@ -36,20 +36,24 @@ const Projects: React.FC = () => {
   //проверяем токен
   const getToProfile = () => {
     const token = localStorage.token;
+    console.log("token : ", token);
     if (token) {
+      console.log("work");
       return fetch("http://localhost:4000/home", {
         method: "GET",
         headers: {
-          "Content-Type": "application/json",
           Accept: "application/json",
           Authorization: `Bearer ${token}`,
         },
       })
-        .then((resp) => resp.json())
+        .then((resp) => {
+          return resp.text();
+        })
         .then((data) => {
-          if (data.message) {
+          if (!data) {
             localStorage.removeItem("token");
           } else {
+            console.log("data", data);
             dispatch(authUser(true));
           }
         })
