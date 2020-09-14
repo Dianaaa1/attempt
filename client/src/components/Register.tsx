@@ -1,9 +1,5 @@
 import React, { useState, useCallback } from "react";
-import { Redirect } from "react-router-dom";
 import { useFormik } from "formik";
-import { useDispatch, useSelector } from "react-redux";
-import { userData } from "./redux/actions/action";
-import { getAuthStatus } from "./redux/selectors";
 import * as Yup from "yup";
 import { Button, TextField } from "@material-ui/core";
 import qs from "qs";
@@ -11,7 +7,6 @@ import qs from "qs";
 const Login: React.FC = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [message, setMessage] = useState("");
 
   const formik = useFormik({
     initialValues: {
@@ -23,7 +18,7 @@ const Login: React.FC = () => {
       password: Yup.string().required("Required!"),
     }),
     onSubmit: async () => {
-      const response = await fetch("http://localhost:4000/register", {
+      await fetch("http://localhost:4000/user/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
@@ -90,7 +85,6 @@ const Login: React.FC = () => {
           <Button type="submit" color="primary" variant="contained">
             Sign up
           </Button>
-          <div>{message}</div>
         </div>
       </form>
     </div>

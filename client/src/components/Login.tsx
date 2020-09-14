@@ -13,7 +13,7 @@ const Login: React.FC = () => {
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [message, setMessage] = useState("");
+ 
 
   const formik = useFormik({
     initialValues: {
@@ -28,7 +28,6 @@ const Login: React.FC = () => {
       dispatch(userData(username, password));
     },
   });
-  console.log("status:  ", logStatus);
 
   return (
     <div>
@@ -78,7 +77,6 @@ const Login: React.FC = () => {
           <Button type="submit" color="primary" variant="contained">
             Login
           </Button>
-          <div>{message}</div>
         </div>
       </form>
     </div>

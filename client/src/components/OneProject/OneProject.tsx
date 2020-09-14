@@ -50,7 +50,6 @@ const OneProject:React.FC <IoneProject>= (props) => {
       description: Yup.string().required("Required!"),
     }),
     onSubmit: (ev) => {
-      alert(JSON.stringify(ev))
       dispatch(editProject(project.id, name, description));
       formik.handleReset(ev);
     },

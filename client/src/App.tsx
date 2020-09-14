@@ -15,7 +15,7 @@ import {
   CssBaseline,
   PaletteType,
 } from "@material-ui/core";
-import { authUser } from "./components/redux/actions/action";
+import { authUser} from "./components/redux/actions/action";
 //запускаем сагу
 sagaMiddleware.run(rootSaga);
 
@@ -38,7 +38,6 @@ const Projects: React.FC = () => {
     const token = localStorage.token;
     console.log("token : ", token);
     if (token) {
-      console.log("work");
       return fetch("http://localhost:4000/home", {
         method: "GET",
         headers: {

@@ -8,7 +8,7 @@ function* toWelcome() {
   let username = user.username;
   let password = user.password;
   const js = yield call(async () => {
-    await fetch("http://localhost:4000/login", {
+    await fetch("http://localhost:4000/user/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
@@ -27,6 +27,7 @@ function* toWelcome() {
         const js = JSON.parse(response).message;
         const token = JSON.parse(response).token;
         localStorage.setItem("token", token);
+        localStorage.setItem("username", username);
         return js;
       })
       .catch((error) => {
@@ -50,9 +51,4 @@ interface Idata {
   id: number;
   username: string;
   password: string;
-}
-
-async function handleResponse(response: Response): Promise<Idata> {
-  const data = await response.text().then((text: string) => JSON.parse(text));
-  return data;
 }

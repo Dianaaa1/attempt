@@ -3,59 +3,37 @@ const bodyParser = require("body-parser");
 const passport = require('passport')
 const app = express();
 const cors = require('cors');
+const mongoose=require('mongoose');
 
 app.use(cors())
 app.options('*', cors())
 app.use(passport.initialize());
-app.use(passport.session());
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  //res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,PATCH,OPTIONS');
-  next();
-});
 
-const jwt = require('jsonwebtoken')
-const User = require('./models/users')
+//настраиваем работу с бд
+mongoose.set("useCreateIndex", true);
+//соединяемся с бд
+mongoose
+  .connect("mongodb://localhost/MyDatabase", {
+    useUnifiedTopology: true,
+    useNewUrlParser: true,
+  })
+  .then(() => console.log("DB Connected!"))
+  .catch((err) => {
+    console.log(`DB Connection Error: ${err.message}`);
+  });
 
-const ExtractJwt = require('passport-jwt').ExtractJwt;
-const jwtsecret = "mysecretkey";
-const jwtOptions = {
-  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-  secretOrKey: jwtsecret
-};
+require('./auth');
+//объявляем роутеры
+const authRoutes=require('./routes/auth');
+const projectsRoutes=require('./routes/projects');
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json())
 
-require('./auth');
-
-//запрос логина
-app.post('/login',
-  passport.authenticate('local', { session: false }),
-  function (req, res) {
-    console.log('You are logged in!');
-    User.findOne({ username: req.body.username }, (err, user) => user.username);
-    var payload = { username: req.body.username };
-    var token = jwt.sign(payload, jwtOptions.secretOrKey);
-    res.json({ message: "ok", token: token });
-  });
-//запрос на регистрацию
-app.post('/register', (req, res) => {
-  const newUser = new User({ username: req.body.username });
-  User.register(newUser, req.body.password, function (err, user) {
-    if (err) {
-      if (!req.body.username || !req.body.password) {
-        return res.send('Введите все данные')
-      }
-      console.error(err);
-      res.send('Данное имя пользователя занято, выберите другое')
-    } else {
-      passport.authenticate('local')(req, res, () => {
-        console.log('user authenticated');
-        res.send('You are registed, try to login')
-      })
-    }
-  })
-})
+//подключаем роутеры
+app.use('/user',authRoutes);
+app.use('/projects',projectsRoutes);
+//проверяем токен
 app.get('/home', passport.authenticate('jwt', { session: false }),
   function (req, res) {
     res.send('ok');

@@ -1,7 +1,9 @@
 import { AUTH_USER, USER_DATA, GETJSON, actionType } from "../actions/actionType";
 
 const defaultState = {
-  login: false
+  login: false, 
+  username: '',
+  password:''
 };
 const authorization = (state = defaultState, action: actionType) => {
   switch (action.type) {

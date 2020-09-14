@@ -7,9 +7,12 @@ import { addProject, authUser } from "../redux/actions/action";
 import * as Yup from "yup";
 import { getAuthStatus } from "../redux/selectors";
 import { TextField, Button } from "@material-ui/core";
+import qs from 'qs';
 
 const Form: React.FC = () => {
   const dispatch = useDispatch();
+  //добавляем имя юзера в локалсторедж, чтобы проекты добавлять конкретному юзеру, который будет определен именем
+  const user = localStorage.getItem("username");
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const formik = useFormik({
@@ -21,8 +24,23 @@ const Form: React.FC = () => {
       name: Yup.string().required("Required!"),
       description: Yup.string().required("Required!"),
     }),
-    onSubmit: (event) => {
+    onSubmit: async (event) => {
+      console.log("username: ", user)
       dispatch(addProject(name, description));
+      //запрошиваем на создание в бд
+      await fetch("http://localhost:4000/projects/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+        },
+        body: qs.stringify({username: user, name: name, description: description }),
+      })
+        .then((response) => {
+          return response.clone().text();
+        })
+        .catch((error) => {
+          Promise.reject(error);
+        });
       formik.handleReset(event);
     },
   });
@@ -37,6 +55,7 @@ const Form: React.FC = () => {
         color="primary"
         onClick={() => {
           localStorage.removeItem("token");
+          localStorage.removeItem("username");
           dispatch(authUser(false));
         }}
       >
