@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Form from "./components/Form/Form";
-import ProjectsList from "./components/ProjectsList/ProjectsList";
 import { BrowserRouter, Route, Redirect, Link } from "react-router-dom";
 import Login from "./components/Login";
 import Register from "./components/Register";
@@ -8,14 +7,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAuthStatus } from "./components/redux/selectors";
 import rootSaga from "./components/saga/sagas";
 import { sagaMiddleware } from "./components/redux/reducers/store";
-import {
-  MuiThemeProvider,
-  createMuiTheme,
-  Button,
-  CssBaseline,
-  PaletteType,
-} from "@material-ui/core";
-import { authUser} from "./components/redux/actions/action";
+import { MuiThemeProvider, createMuiTheme, Button, CssBaseline, PaletteType} from "@material-ui/core";
+import { authUser, letFetch} from "./components/redux/actions/action";
+import FormList from './components/FormList/FormList'
 //запускаем сагу
 sagaMiddleware.run(rootSaga);
 
@@ -36,7 +30,6 @@ const Projects: React.FC = () => {
   //проверяем токен
   const getToProfile = () => {
     const token = localStorage.token;
-    console.log("token : ", token);
     if (token) {
       return fetch("http://localhost:4000/home", {
         method: "GET",
@@ -54,6 +47,7 @@ const Projects: React.FC = () => {
           } else {
             console.log("data", data);
             dispatch(authUser(true));
+            dispatch(letFetch(true));
           }
         })
         .catch((err) => console.log(err));
@@ -77,8 +71,7 @@ const Projects: React.FC = () => {
             {logStatus ? <Form /> : <Redirect to="/login" />}
           </Route>
           <Route path="/form">
-            <Form />
-            <ProjectsList />
+            <FormList/>
           </Route>
           <Route path="/register">
             <Register />

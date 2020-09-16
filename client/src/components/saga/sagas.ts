@@ -1,7 +1,7 @@
 import { takeEvery, select, delay, call, put } from "redux-saga/effects";
 import qs from "qs";
 import { getAuthStatus, getAuth } from "../redux/selectors";
-import { jsonData, authUser } from "../redux/actions/action";
+import { authUser } from "../redux/actions/action";
 
 function* toWelcome() {
   const user = yield select(getAuth);
@@ -38,7 +38,6 @@ function* toWelcome() {
   if (localStorage.getItem("token")) yield put(authUser(true));
   else return;
   //добавляем в стор полученный json
-  yield put(jsonData(js));
   //приветствуем полльзователя
   yield delay(1000);
   const loginStatus = yield select(getAuthStatus);
@@ -47,8 +46,4 @@ function* toWelcome() {
 export default function* rootSaga() {
   yield takeEvery("USER_DATA", toWelcome);
 }
-interface Idata {
-  id: number;
-  username: string;
-  password: string;
-}
+

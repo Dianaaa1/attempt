@@ -1,36 +1,22 @@
-import { ADD_PROJ, TOGGLE_PROJ, EDIT_PROJ, DELETE_PROJ, AUTH_USER, USER_DATA, GETJSON, IaddProject, ItoggleProject, IeditProject, IdeleteProject, IauthUser, IuserData, IgetJSON} from "./actionType";
+import { ALL_PROJ, IallProject, GET_STATE, Iletfetch, AUTH_USER, USER_DATA, IauthUser, IuserData } from "./actionTypes";
 
-
-let nextId = 0;
-
-export function addProject (name: string, description:string) : IaddProject {
+export function allProject( project: any, isFetching:boolean ): IallProject {
   return {
-  type: ADD_PROJ,
-  payload: {
-    id: ++nextId,
-    name,
-    description
-  }
-}};
-
-export function toggleProject (id: number) : ItoggleProject {
+    type: ALL_PROJ,
+    payload: {
+        isFetching,
+      project
+    },
+  };
+}
+export function letFetch(isFetching: boolean ): Iletfetch {
   return {
-    type: TOGGLE_PROJ,
-    payload:  {id} ,
-  }
-};
-export function editProject (id: number, name: string, description:string) : IeditProject {
-  return {
-    type: EDIT_PROJ,
-    payload: { id, name, description },
-  }
-};
-export function deleteProject (id: number) : IdeleteProject{
-  return {
-    type: DELETE_PROJ,
-    payload: { id },
-  }
-};
+    type: GET_STATE,
+    payload: {
+      isFetching,
+  },
+  };
+}
 export function authUser (login: boolean) : IauthUser{
   return {
     type: AUTH_USER,
@@ -43,10 +29,3 @@ export function userData (username: string, password:string) : IuserData{
     payload: {username, password}
   }
 };
-export function jsonData (json: any) : IgetJSON{
-  return {
-    type: GETJSON,
-    payload: json
-  }
-};
-

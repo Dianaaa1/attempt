@@ -1,34 +1,23 @@
 import React, { useRef, useState, useCallback } from "react";
 import { useDispatch } from "react-redux";
 import "../OneProject/style.css";
-import {
-  toggleProject,
-  deleteProject,
-  editProject,
-} from "../redux/actions/action";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import {
-  ListItem,
-  Box,
-  Typography,
-  ButtonGroup,
-  Button,
-  TextField,
-} from "@material-ui/core";
+import { ListItem, Box, Typography, ButtonGroup, Button, TextField, } from "@material-ui/core";
+import { letFetch } from "../redux/actions/action";
  
 interface IoneProject{
   project:{
     name: string,
     description: string,
     completed: boolean,
-    id:number,
+    _id: string,
   }
 }
 
 const OneProject:React.FC <IoneProject>= (props) => {
   let project=props.project
-  //const editform = useRef<HTMLFormElement>(null);
+
   const editform = useRef() as React.MutableRefObject<HTMLFormElement>;
   //открываем-закрываем форму редактирования
   const showEditForm = () => {
@@ -36,10 +25,32 @@ const OneProject:React.FC <IoneProject>= (props) => {
       ? (editform.current.style.display = "block")
       : (editform.current.style.display = "none");
   };
+  const token = localStorage.token;
   const dispatch = useDispatch();
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-
+  //запрос на удаление с бд
+  const deleteProject=(id: any)=>{
+      fetch('http://localhost:4000/projects/delete',{
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Accept': 'application/json',
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({id: id})
+      })
+      .then((response) => {
+        return response.json();
+      }).then((res)=>{
+       })
+      .catch((error) => {
+        console.log("errr  :", error)
+        Promise.reject(error);
+      });
+      //запускаем запросы
+      dispatch(letFetch(true));
+  }
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -50,23 +61,12 @@ const OneProject:React.FC <IoneProject>= (props) => {
       description: Yup.string().required("Required!"),
     }),
     onSubmit: (ev) => {
-      dispatch(editProject(project.id, name, description));
       formik.handleReset(ev);
     },
   });
   return (
-    <ListItem
-      className="proj-item"
-      style={!project.name ? { display: "none" } : { display: "block" }}
-    >
-      <Box
-        component="div"
-        className={project && project.completed ? "done" : "undone"}
-        onClick={useCallback(() => dispatch(toggleProject(project.id)), [
-          dispatch,
-          project.id,
-        ])}
-      >
+    <ListItem className="proj-item" style={!project.name ? { display: "none" } : { display: "block" }} >
+      <Box component="div" className={project && project.completed ? "done" : "undone"} onClick={useCallback(() => {}, [ project._id ])} >
         {project && project.completed ? "👌" : "✍"}{" "}
         <Typography display="inline" variant="h6">
           {" "}
@@ -80,17 +80,12 @@ const OneProject:React.FC <IoneProject>= (props) => {
         {project.description} <br />
       </Box>
       <div className="but-group">
-      <ButtonGroup 
-      component="div"
-        variant="text"
-        color="secondary"
-        aria-label="text primary button group"
-      >
+      <ButtonGroup component="div" variant="text" color="secondary" aria-label="text primary button group">
         <Button
           color="secondary"
           onClick={useCallback(() => {
-            dispatch(deleteProject(project.id));
-          }, [dispatch, project.id])}
+            deleteProject(project._id)
+          }, [project._id])}
         >
           Delete{" "}
         </Button>
@@ -104,9 +99,7 @@ const OneProject:React.FC <IoneProject>= (props) => {
           ref={editform}
           className="form-update"
         >
-          <TextField
-            fullWidth
-            type="text"
+          <TextField fullWidth type="text"
             name="name"
             label="name"
             value={formik.values.name}

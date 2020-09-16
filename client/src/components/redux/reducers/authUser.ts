@@ -1,4 +1,4 @@
-import { AUTH_USER, USER_DATA, GETJSON, actionType } from "../actions/actionType";
+import { AUTH_USER, USER_DATA, actionType } from "../actions/actionTypes";
 
 const defaultState = {
   login: false, 
@@ -17,10 +17,6 @@ const authorization = (state = defaultState, action: actionType) => {
     case USER_DATA: {
       const { username, password } = action.payload;
       return { ...state, username, password };
-    }
-
-    case GETJSON: {
-      return {...state, json: action.payload};
     }
     default:
       return state;

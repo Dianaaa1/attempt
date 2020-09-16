@@ -1,17 +1,8 @@
 import { RootState } from "./reducers/store";
 
-export function getProjectList(store: RootState) {
-  return store.projectList;
+export function getStore(store: RootState) {
+  return store;
 }
-
-export function getProjectById(store: RootState, id: number) {
-  return { ...store.projectMap[id], id };
-}
-
-export function getProjects(store: RootState) {
-  return store.projectList.map((id) => getProjectById(store, id));
-}
-
 export function getAuth(store: RootState) {
   return store.authorization;
 }
@@ -19,3 +10,14 @@ export function getAuth(store: RootState) {
 export function getAuthStatus(store: RootState) {
   return store.authorization.login;
 }
+
+export function getNewStore(store: RootState) {
+  return store.projectsFromDb;
+}
+
+export function getOneProject(store: RootState, id: number) {
+  return { ...store.projectsFromDb.project[id] };
+}
+export function getProjectsFromNewStore(store: RootState) {
+  return store.projectsFromDb.project;
+} 

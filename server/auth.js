@@ -13,7 +13,6 @@ const jwtOptions = {
 };
 
 passport.use(new JwtStrategy(jwtOptions, function (payload, done) {
-    console.log("payload received", payload)
     User.findOne({ username: payload.username }, (err, user) => {
         if (err) {
             return done(err)

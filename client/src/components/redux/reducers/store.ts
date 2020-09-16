@@ -1,11 +1,10 @@
 import { combineReducers, createStore, applyMiddleware } from "redux";
-import projectList from "./projList";
-import projectMap from "./projMap";
 import authorization from './authUser';
 import createSagaMiddleware from "redux-saga";
+import projectsFromDb from './projectsbd';
 
 export const sagaMiddleware = createSagaMiddleware();
-const rootReducer = combineReducers({ projectList, projectMap, authorization});
+const rootReducer = combineReducers({authorization, projectsFromDb});
 export default createStore(rootReducer, applyMiddleware(sagaMiddleware));
 
 export type RootState = ReturnType<typeof rootReducer>

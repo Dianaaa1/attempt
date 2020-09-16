@@ -3,16 +3,16 @@ import "./style.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useFormik } from "formik";
 import { Redirect } from "react-router-dom";
-import { addProject, authUser } from "../redux/actions/action";
+import { authUser } from "../redux/actions/action";
 import * as Yup from "yup";
 import { getAuthStatus } from "../redux/selectors";
 import { TextField, Button } from "@material-ui/core";
 import qs from 'qs';
+import { letFetch } from "../redux/actions/action";
 
 const Form: React.FC = () => {
   const dispatch = useDispatch();
   //добавляем имя юзера в локалсторедж, чтобы проекты добавлять конкретному юзеру, который будет определен именем
-  const user = localStorage.getItem("username");
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const formik = useFormik({
@@ -25,15 +25,15 @@ const Form: React.FC = () => {
       description: Yup.string().required("Required!"),
     }),
     onSubmit: async (event) => {
-      console.log("username: ", user)
-      dispatch(addProject(name, description));
+      const token = localStorage.token;
       //запрошиваем на создание в бд
-      await fetch("http://localhost:4000/projects/create", {
+      fetch("http://localhost:4000/projects/create", {
         method: "POST",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+          Authorization: `Bearer ${token}`,
         },
-        body: qs.stringify({username: user, name: name, description: description }),
+        body: qs.stringify({name: name, description: description }),
       })
         .then((response) => {
           return response.clone().text();
@@ -41,13 +41,14 @@ const Form: React.FC = () => {
         .catch((error) => {
           Promise.reject(error);
         });
+        dispatch(letFetch(true));
       formik.handleReset(event);
     },
   });
 
   //функция logout выполняется внутри и сразу же при рендировании Login page
   const auth = useSelector(getAuthStatus);
-
+  
   return (
     <div>
       <Button
@@ -71,11 +72,7 @@ const Form: React.FC = () => {
             name="name"
             value={formik.values.name}
             onChange={useCallback(formik.handleChange, [])}
-            onBlur={useCallback(
-              (e: React.FocusEvent<HTMLInputElement>) =>
-                setName(e.target.value),
-              []
-            )}
+            onBlur={useCallback( (e: React.FocusEvent<HTMLInputElement>) => setName(e.target.value), [] )}
           />
           <div className="errors">
             {formik.errors.name && formik.touched.name && (
