@@ -51,6 +51,27 @@ const OneProject:React.FC <IoneProject>= (props) => {
       //запускаем запросы
       dispatch(letFetch(true));
   }
+  const editProject=(id:string, name:string, description:string)=> {
+    fetch('http://localhost:4000/projects/edit',{
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Accept': 'application/json',
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({id, name, description})
+    })
+    .then((response) => {
+      return response.json();
+    }).then((res)=>{
+     })
+    .catch((error) => {
+      console.log("errr  :", error)
+      Promise.reject(error);
+    });
+    //запускаем запросы
+    dispatch(letFetch(true));
+  }
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -61,6 +82,8 @@ const OneProject:React.FC <IoneProject>= (props) => {
       description: Yup.string().required("Required!"),
     }),
     onSubmit: (ev) => {
+      //по клику запрос на редактирование
+      editProject(project._id, name, description)
       formik.handleReset(ev);
     },
   });

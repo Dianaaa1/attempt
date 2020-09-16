@@ -33,6 +33,11 @@ router.post('/delete', passport.authenticate('jwt', { session: false }), (req, r
     if (err) {console.log(err)}
   });
 })
+router.post('/edit', passport.authenticate('jwt', { session: false }), (req, res)=>{
+  Projects.findByIdAndUpdate(req.body.id, {name: req.body.name, description: req.body.description}, function(err) {
+    if (err) {console.log(err)}
+  });
+})
 //запрос на регистрацию
 router.post("/toggle");
 module.exports = router;
