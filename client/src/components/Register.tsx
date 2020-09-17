@@ -17,6 +17,7 @@ const Login: React.FC = () => {
       username: Yup.string().required("Required!"),
       password: Yup.string().required("Required!"),
     }),
+    //по клику отправляем запрос на регистрацию
     onSubmit: async () => {
       await fetch("http://localhost:4000/user/register", {
         method: "POST",
@@ -29,7 +30,13 @@ const Login: React.FC = () => {
           return response.clone().text();
         })
         .then((response) => {
-          setTimeout(() => alert(response), 500);
+          setTimeout(() => {
+            alert(JSON.parse(response).message)
+            //если регистрация успешна, то редиректим на логин
+            if(JSON.parse(response).status==="done")
+            window.location.replace("/login");
+          }, 500);
+          
         })
         .catch((error) => {
           Promise.reject(error);

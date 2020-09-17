@@ -17,7 +17,6 @@ interface IoneProject{
 
 const OneProject:React.FC <IoneProject>= (props) => {
   let project=props.project
-
   const editform = useRef() as React.MutableRefObject<HTMLFormElement>;
   //открываем-закрываем форму редактирования
   const showEditForm = () => {
@@ -36,7 +35,7 @@ const OneProject:React.FC <IoneProject>= (props) => {
         headers: {
           Authorization: `Bearer ${token}`,
           'Accept': 'application/json',
-          "Content-Type": "application/json"
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({id: id})
       })
@@ -51,13 +50,14 @@ const OneProject:React.FC <IoneProject>= (props) => {
       //запускаем запросы
       dispatch(letFetch(true));
   }
+  //запрос на редактирование
   const editProject=(id:string, name:string, description:string)=> {
     fetch('http://localhost:4000/projects/edit',{
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
         'Accept': 'application/json',
-        "Content-Type": "application/json"
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({id, name, description})
     })
@@ -65,6 +65,27 @@ const OneProject:React.FC <IoneProject>= (props) => {
       return response.json();
     }).then((res)=>{
      })
+    .catch((error) => {
+      console.log("errr  :", error)
+      Promise.reject(error);
+    });
+    //запускаем запросы
+    dispatch(letFetch(true));
+  }
+  //запрос на выполнено/невыполнено
+  const toggleProject=(id:string)=> {
+    fetch('http://localhost:4000/projects/toggle',{
+      method:"POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({id})
+    })
+    .then((response) => {
+      return response.json();
+    })
     .catch((error) => {
       console.log("errr  :", error)
       Promise.reject(error);
@@ -89,15 +110,13 @@ const OneProject:React.FC <IoneProject>= (props) => {
   });
   return (
     <ListItem className="proj-item" style={!project.name ? { display: "none" } : { display: "block" }} >
-      <Box component="div" className={project && project.completed ? "done" : "undone"} onClick={useCallback(() => {}, [ project._id ])} >
+      <Box component="div" className={project && project.completed ? "done" : "undone"} onClick={useCallback(() => {toggleProject(project._id)}, [ project._id ])} >
         {project && project.completed ? "👌" : "✍"}{" "}
         <Typography display="inline" variant="h6">
-          {" "}
           Name:{" "}
         </Typography>{" "}
         {project.name} <br />
         <Typography display="inline" variant="h6">
-          {" "}
           Descripiton:{" "}
         </Typography>{" "}
         {project.description} <br />

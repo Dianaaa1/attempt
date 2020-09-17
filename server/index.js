@@ -8,6 +8,8 @@ const mongoose=require('mongoose');
 app.use(cors())
 app.options('*', cors())
 app.use(passport.initialize());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json())
 
 //настраиваем работу с бд
 mongoose.set("useCreateIndex", true);
@@ -26,14 +28,10 @@ require('./auth');
 //объявляем роутеры
 const authRoutes=require('./routes/auth');
 const projectsRoutes=require('./routes/projects');
-
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json())
-
 //подключаем роутеры
 app.use('/user',authRoutes);
 app.use('/projects',projectsRoutes);
-//проверяем токен
+//запрос редиректа на профильную страницу при входе при валидном токене
 app.get('/home', passport.authenticate('jwt', { session: false }),
   function (req, res) {
     res.send('ok');

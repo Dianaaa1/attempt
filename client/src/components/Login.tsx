@@ -14,7 +14,6 @@ const Login: React.FC = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
  
-
   const formik = useFormik({
     initialValues: {
       username: "",
@@ -24,6 +23,7 @@ const Login: React.FC = () => {
       username: Yup.string().required("Required!"),
       password: Yup.string().required("Required!"),
     }),
+    //по вызову екшена срабатывает сага который отправляет запрос логина на сервер 
     onSubmit: async () => {
       dispatch(userData(username, password));
     },
@@ -32,6 +32,7 @@ const Login: React.FC = () => {
   return (
     <div>
       {logStatus ? <Redirect to={{ pathname: "/form" }} /> : <div></div>}
+      <h1>Login</h1>
       <form onSubmit={formik.handleSubmit}>
         <div>
           <TextField

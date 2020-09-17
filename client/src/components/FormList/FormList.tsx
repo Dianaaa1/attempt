@@ -25,7 +25,7 @@ const FormList =()=> {
         if(store.isFetching && res)
         dispatch(allProject(res, false));
        })
-      .catch((error) => {
+      .catch((error: any) => {
         console.log("errr  :", error)
         Promise.reject(error);
       });

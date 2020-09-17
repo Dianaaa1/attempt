@@ -25,15 +25,12 @@ router.post('/register', (req, res) => {
   const newUser = new User({ username: req.body.username });
   User.register(newUser, req.body.password, function (err, user) {
     if (err) {
-      if (!req.body.username || !req.body.password) {
-        return res.send('Введите все данные')
-      }
       console.error(err);
-      res.send('Данное имя пользователя занято, выберите другое')
+      res.send({message: 'Данное имя пользователя занято, выберите другое', status: 'not done'})
     } else {
       passport.authenticate('local')(req, res, () => {
         console.log('user authenticated');
-        res.send('You are registed, try to login')
+        res.send({message: 'You are registed, try to login', status: 'done'})
       })
     }
   })

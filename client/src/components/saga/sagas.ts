@@ -16,7 +16,6 @@ function* toWelcome() {
       body: qs.stringify({ username: username, password: password }),
     })
       .then((response) => {
-        console.log("res  ", response);
         return response.clone().text();
       })
       .then((response) => {
@@ -37,7 +36,6 @@ function* toWelcome() {
   //если мы получили данные а не ошибку, меняем авторизацию на залогиненную, если вывводится ошибка функция останавливается
   if (localStorage.getItem("token")) yield put(authUser(true));
   else return;
-  //добавляем в стор полученный json
   //приветствуем полльзователя
   yield delay(1000);
   const loginStatus = yield select(getAuthStatus);
