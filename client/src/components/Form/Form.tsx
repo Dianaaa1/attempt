@@ -15,6 +15,7 @@ const Form: React.FC = () => {
   //добавляем имя юзера в локалсторедж, чтобы проекты добавлять конкретному юзеру, который будет определен именем
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+  console.log("check branch");
   const formik = useFormik({
     initialValues: {
       name: "",
