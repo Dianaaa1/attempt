@@ -40,6 +40,7 @@ router.post('/edit', passport.authenticate('jwt', { session: false }), (req, res
 })
 //запрос на регистрацию
 router.post('/toggle', passport.authenticate('jwt', { session: false }), (req, res)=>{
+  console.log(req)
   Projects.findById(req.body.id, function(err, project) {
     project.completed=!project.completed;
     project.save();
